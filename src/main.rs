@@ -132,14 +132,14 @@ fn main() {
   match std::time::SystemTime::now().duration_since(std::time::SystemTime::UNIX_EPOCH) {
     Ok(unixtime) => {
       let days: f64 = unixtime.as_secs_f64() / 3600_f64 / 24_f64;
-      year   = (days / 365.25).floor() as u64 + 1970;
-      month  = (days % 365.25 / 30.437).ceil() as u64;
-      day    = (days % 30.437).ceil() as u64;
+      year  = (days / 365.25).floor() as u64 + 1970;
+      month = (days % 365.25 / 30.437).ceil() as u64;
+      day   = (days % 30.437).ceil() as u64;
     }
     Err(_) => {
-      year   = 1970;
-      month  = 1;
-      day    = 1;
+      year  = 1970;
+      month = 1;
+      day   = 1;
     }
   }
   let sunrise_time: i64 = utc_time(jd(year, month, day), latitude, longitude, "sunrise") as i64 * 60 + 10_800;
