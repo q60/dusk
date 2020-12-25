@@ -124,7 +124,6 @@ fn utc_time(jd: f64, lat: f64, lon: f64, mode: &str) -> f64 {
 }
 
 fn main() {
-  // TODO: fix zero hours/minutes yielding so there are two zeroes instead of one
   let year:  u64;
   let month: u64;
   let day:   u64;
@@ -154,12 +153,12 @@ fn main() {
     year
   );
   println!(
-    " \x1B[93m-\x1B[0m sunrise: {}:{}",
+    " \x1B[93m-\x1B[0m sunrise: {:0>2}:{:0>2}",
     sunrise_time % 86_400 / 3600,
     sunrise_time % 3600 / 60,
   );
   println!(
-    " \x1B[93m-\x1B[0m sunset: {}:{}",
+    " \x1B[93m-\x1B[0m sunset: {:0>2}:{:0>2}",
     sunset_time % 86_400 / 3600,
     sunset_time % 3600 / 60,
   );
