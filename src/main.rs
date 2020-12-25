@@ -142,8 +142,18 @@ fn main() {
       day   = 1;
     }
   }
-  let sunrise_time: i64 = utc_time(jd(year, month, day), latitude, longitude, "sunrise") as i64 * 60 + 10_800;
-  let sunset_time:  i64 = utc_time(jd(year, month, day), latitude, longitude, "sunset") as i64 * 60 + 10_800;
+  let sunrise_time: i64 = utc_time(
+    jd(year, month, day),
+    latitude,
+    longitude,
+    "sunrise"
+  ) as i64 * 60 + 10_800;
+  let sunset_time:  i64 = utc_time(
+    jd(year, month, day),
+    latitude,
+    longitude,
+    "sunset"
+  ) as i64 * 60 + 10_800;
   println!(
     "\x1B[94mat\x1B[0m ({}, {}) \x1B[95mon\x1B[0m {}.{}.{}:",
     latitude,
