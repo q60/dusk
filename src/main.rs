@@ -124,6 +124,7 @@ fn utc_time(jd: f64, lat: f64, lon: f64, mode: &str) -> f64 {
 }
 
 fn main() {
+  // TODO: fix zero hours/minutes yielding so there are two zeroes instead of one
   let year:  u64;
   let month: u64;
   let day:   u64;
