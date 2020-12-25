@@ -132,7 +132,7 @@ fn main() {
   let longitude: f64 = -39.21_055;
   match std::time::SystemTime::now().duration_since(std::time::SystemTime::UNIX_EPOCH) {
     Ok(unixtime) => {
-      let days: f64 = unixtime.as_secs_f64() / 3600_f64 / 24_f64; // 1609459200_f64
+      let days: f64 = unixtime.as_secs_f64() / 3600_f64 / 24_f64;
       year   = (days / 365.25).floor() as u64 + 1970;
       month  = (days % 365.25 / 30.437).ceil() as u64;
       day    = (days % 30.437).ceil() as u64;
