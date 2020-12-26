@@ -62,7 +62,7 @@ fn time_equation(t: f64) -> f64 {
   let sin2m:   f64 = (2. * deg_to_rad(m)).sin();
   rad_to_deg(y * sin2l0 - 2_f64 * e * sinm
     + 4_f64 * e * y * sinm * cos2l0
-    - 0.5 * y * y * sin4l0 - 1.25 * e * e * sin2m) * 4_f64
+    - 0.5 * y.powi(2) * sin4l0 - 1.25 * e.powi(2) * sin2m) * 4_f64
 }
 
 fn julian_cent(jd: f64) -> f64 {
