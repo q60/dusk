@@ -1,4 +1,5 @@
 use std::f64::consts::PI;
+use std::time::SystemTime;
 
 fn deg_to_rad(angle_deg: f64) -> f64 {
   PI * angle_deg / 180_f64
@@ -129,7 +130,7 @@ fn main() {
   let day:   u64;
   let latitude:  f64 = 51.67_166;
   let longitude: f64 = -39.21_055;
-  match std::time::SystemTime::now().duration_since(std::time::SystemTime::UNIX_EPOCH) {
+  match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
     Ok(unixtime) => {
       let days: f64 = unixtime.as_secs_f64() / 3600_f64 / 24_f64;
       year  = (days / 365.25).floor() as u64 + 1970;
