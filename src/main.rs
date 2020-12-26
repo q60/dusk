@@ -45,7 +45,8 @@ fn sun_center_equation(t: f64) -> f64 {
   let sinm:  f64 = mrad.sin();
   let sin2m: f64 = (2_f64 * mrad).sin();
   let sin3m: f64 = (3_f64 * mrad).sin();
-  sinm * (1.914_602 - t * (0.004_817 + 0.000_014 * t)) + sin2m * (0.019_993 - 0.000_101 * t) + sin3m * 0.000_289
+  sinm * (1.914_602 - t * (0.004_817 + 0.000_014 * t))
+    + sin2m * (0.019_993 - 0.000_101 * t) + sin3m * 0.000_289
 }
 
 fn time_equation(t: f64) -> f64 {
@@ -59,7 +60,9 @@ fn time_equation(t: f64) -> f64 {
   let sin4l0:  f64 = (4. * deg_to_rad(l0)).sin();
   let sinm:    f64 = (deg_to_rad(m)).sin();
   let sin2m:   f64 = (2. * deg_to_rad(m)).sin();
-  rad_to_deg(y * sin2l0 - 2_f64 * e * sinm + 4_f64 * e * y * sinm * cos2l0 - 0.5 * y * y * sin4l0 - 1.25 * e * e * sin2m) * 4_f64
+  rad_to_deg(y * sin2l0 - 2_f64 * e * sinm
+    + 4_f64 * e * y * sinm * cos2l0
+    - 0.5 * y * y * sin4l0 - 1.25 * e * e * sin2m) * 4_f64
 }
 
 fn julian_cent(jd: f64) -> f64 {
@@ -86,7 +89,8 @@ fn sun_declination(t: f64) -> f64 {
 fn sunrise_hour_angle(lat: f64, decl: f64) -> f64 {
   let lat_rad:  f64 = deg_to_rad(lat);
   let decl_rad: f64 = deg_to_rad(decl);
-  (deg_to_rad(90.833).cos() / (lat_rad.cos() * decl_rad.cos()) - lat_rad.tan() * decl_rad.tan()).acos()
+  (deg_to_rad(90.833).cos() / (lat_rad.cos() * decl_rad.cos())
+    - lat_rad.tan() * decl_rad.tan()).acos()
 }
 
 fn sunset_hour_angle(lat: f64, decl: f64) -> f64 {
@@ -100,7 +104,8 @@ fn jd(mut yy: u64, mut mm: u64, dd: u64) -> f64 {
   }
   let a: f64 = (yy as f64 / 100_f64).floor();
   let b: f64 = 2_f64 - a + (a as f64 / 4_f64).floor();
-  (365.25 * (yy as f64 + 4716_f64)).floor() + (30.6001 * (mm as f64 + 1_f64)).floor() + (dd as f64) + (b as f64) - 1524.5
+  (365.25 * (yy as f64 + 4716_f64)).floor()
+    + (30.6001 * (mm as f64 + 1_f64)).floor() + (dd as f64) + (b as f64) - 1524.5
 }
 
 fn jd_from_julian_cent(t: f64) -> f64 {
