@@ -1,7 +1,24 @@
 use chrono::{Datelike, Timelike};
 use std::f64::consts::PI;
+use argh::FromArgs;
+
+#[derive(FromArgs)]
+/// sunrise and sunset fetcher
+struct Position {
+    /// latitude in degrees
+    #[argh(option)]
+    latitude: f64,
+
+    /// longitude in degrees
+    #[argh(option)]
+    longitude: f64,
+}
 
 fn main() {
+    let Position {
+        latitude, longitude
+    } = argh::from_env();
+
     let time = chrono::Local::now();
 
     let timezone_offset = time.offset().local_minus_utc() as f64 / 60.;
@@ -13,8 +30,8 @@ fn main() {
         365
     };
 
-    let latitude_deg: f64 = 51.671667;
-    let longitude_deg: f64 = 39.210556;
+    let latitude_deg: f64 = latitude;
+    let longitude_deg: f64 = longitude;
     let latitude_rad = latitude_deg.to_radians();
 
     // fractional year in radians
