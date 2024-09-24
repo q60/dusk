@@ -25,9 +25,9 @@ fn main() {
     let day_of_the_year = time.ordinal0() as f64;
     let hour = time.hour() as f64;
     let days = if time.naive_utc().date().leap_year() {
-        366
+        366.
     } else {
-        365
+        365.
     };
 
     let latitude_deg: f64 = latitude;
@@ -35,7 +35,7 @@ fn main() {
     let latitude_rad = latitude_deg.to_radians();
 
     // fractional year in radians
-    let g = 2. * PI / (days as f64) * (day_of_the_year + (hour - 12.) / 24.);
+    let g = 2. * PI / days * (day_of_the_year + (hour - 12.) / 24.);
 
     // equation of time in minutes
     let eqtime = 229.18
