@@ -58,12 +58,12 @@ fn main() {
     // sunrise time in minutes
     let sunrise = (720. - 4. * (longitude_deg + ha.to_degrees()) - eqtime) + timezone_offset;
     let sunrise_hour = (sunrise / 60.) as i32;
-    let sunrise_minutes = (sunrise - (sunrise_hour as f64) * 60.) as i32;
+    let sunrise_minutes = (sunrise % 60.) as i32;
 
     // sunset time in minutes
     let sunset = (720. - 4. * (longitude_deg - ha.to_degrees()) - eqtime) + timezone_offset;
     let sunset_hour = (sunset / 60.) as i32;
-    let sunset_minutes = (sunset - (sunset_hour as f64) * 60.) as i32;
+    let sunset_minutes = (sunset % 60.) as i32;
 
     println!(
         "\x1B[94mat\x1B[0m ({}, {}) \x1B[95mon\x1B[0m {}:",
