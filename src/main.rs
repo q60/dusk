@@ -5,10 +5,7 @@ fn main() {
     let time = chrono::Local::now();
 
     let timezone_offset = time.offset().local_minus_utc() as f64 / 60.;
-    let year = time.year();
     let day_of_the_year = time.ordinal0() as f64;
-    let month = time.month();
-    let day = time.day();
     let hour = time.hour() as f64;
     let days = if time.naive_utc().date().leap_year() {
         366
@@ -52,8 +49,8 @@ fn main() {
     let sunset_minutes = (sunset - (sunset_hour as f64) * 60.) as i32;
 
     println!(
-        "\x1B[94mat\x1B[0m ({}, {}) \x1B[95mon\x1B[0m {:0>2}.{:0>2}.{}:",
-        latitude_deg, longitude_deg, day, month, year
+        "\x1B[94mat\x1B[0m ({}, {}) \x1B[95mon\x1B[0m {}:",
+        latitude_deg, longitude_deg, time.format("%d.%m.%Y")
     );
     println!(
         " \x1B[93m-\x1B[0m sunrise: {:0>2}:{:0>2}",
