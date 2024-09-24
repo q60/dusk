@@ -20,10 +20,8 @@ fn main() {
     } = argh::from_env();
 
     let time = chrono::Local::now();
-
+    let hours_since_year = 24 * time.ordinal0() + time.hour() - 12;
     let timezone_offset = time.offset().local_minus_utc() as f64 / 60.;
-    let day_of_the_year = time.ordinal0() as f64;
-    let hour = time.hour() as f64;
     let days = if time.naive_utc().date().leap_year() {
         366.
     } else {
@@ -35,7 +33,7 @@ fn main() {
     let latitude_rad = latitude_deg.to_radians();
 
     // fractional year in radians
-    let g = 2. * PI / days * (day_of_the_year + (hour - 12.) / 24.);
+    let g = 2. * PI / days * hours_since_year as f64 / 24.;
 
     // equation of time in minutes
     let eqtime = 229.18
@@ -55,13 +53,16 @@ fn main() {
         - latitude_rad.tan() * decl.tan())
     .acos();
 
+    let base = 720. - 4. * longitude_deg - eqtime + timezone_offset;
+    let offset = 4. * ha.to_degrees();
+
     // sunrise time in minutes
-    let sunrise = (720. - 4. * (longitude_deg + ha.to_degrees()) - eqtime) + timezone_offset;
+    let sunrise = base - offset;
     let sunrise_hour = (sunrise / 60.) as i32;
     let sunrise_minutes = (sunrise % 60.) as i32;
 
     // sunset time in minutes
-    let sunset = (720. - 4. * (longitude_deg - ha.to_degrees()) - eqtime) + timezone_offset;
+    let sunset = base + offset;
     let sunset_hour = (sunset / 60.) as i32;
     let sunset_minutes = (sunset % 60.) as i32;
 
