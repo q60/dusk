@@ -6,7 +6,7 @@ fn main() {
 
     let timezone_offset = time.offset().local_minus_utc() as f64 / 60.;
     let year = time.year();
-    let day_of_the_year = time.ordinal() as f64;
+    let day_of_the_year = time.ordinal0() as f64;
     let month = time.month();
     let day = time.day();
     let hour = time.hour() as f64;
@@ -21,7 +21,7 @@ fn main() {
     let latitude_rad = latitude_deg.to_radians();
 
     // fractional year in radians
-    let g = 2. * PI / (days as f64) * (day_of_the_year - 1. + (hour - 12.) / 24.);
+    let g = 2. * PI / (days as f64) * (day_of_the_year + (hour - 12.) / 24.);
 
     // equation of time in minutes
     let eqtime = 229.18
