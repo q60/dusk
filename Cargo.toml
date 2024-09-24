@@ -2,9 +2,9 @@
 name = "dusk"
 version = "1.2.0"
 authors = ["Llathasa Veleth <llathasa@outlook.com>"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-chrono = "0.2.16"
+chrono = "0.4.38"
