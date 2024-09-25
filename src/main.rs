@@ -1,27 +1,39 @@
 use chrono::{Datelike, Timelike};
 use std::f64::consts::PI;
+use argh::FromArgs;
+
+#[derive(FromArgs)]
+/// sunrise and sunset fetcher
+struct Position {
+    /// latitude in degrees
+    #[argh(option)]
+    latitude: f64,
+
+    /// longitude in degrees
+    #[argh(option)]
+    longitude: f64,
+}
 
 fn main() {
-    let time = chrono::Local::now();
+    let Position {
+        latitude, longitude
+    } = argh::from_env();
 
+    let time = chrono::Local::now();
+    let hours_since_year = 24 * time.ordinal0() + time.hour() - 12;
     let timezone_offset = time.offset().local_minus_utc() as f64 / 60.;
-    let year = time.year();
-    let day_of_the_year = time.ordinal() as f64;
-    let month = time.month();
-    let day = time.day();
-    let hour = time.hour() as f64;
     let days = if time.naive_utc().date().leap_year() {
-        366
+        366.
     } else {
-        365
+        365.
     };
 
-    let latitude_deg: f64 = 51.671667;
-    let longitude_deg: f64 = 39.210556;
+    let latitude_deg: f64 = latitude;
+    let longitude_deg: f64 = longitude;
     let latitude_rad = latitude_deg.to_radians();
 
     // fractional year in radians
-    let g = 2. * PI / (days as f64) * (day_of_the_year - 1. + (hour - 12.) / 24.);
+    let g = 2. * PI / days * hours_since_year as f64 / 24.;
 
     // equation of time in minutes
     let eqtime = 229.18
@@ -41,19 +53,22 @@ fn main() {
         - latitude_rad.tan() * decl.tan())
     .acos();
 
+    let base = 720. - 4. * longitude_deg - eqtime + timezone_offset;
+    let offset = 4. * ha.to_degrees();
+
     // sunrise time in minutes
-    let sunrise = (720. - 4. * (longitude_deg + ha.to_degrees()) - eqtime) + timezone_offset;
+    let sunrise = base - offset;
     let sunrise_hour = (sunrise / 60.) as i32;
-    let sunrise_minutes = (sunrise - (sunrise_hour as f64) * 60.) as i32;
+    let sunrise_minutes = (sunrise % 60.) as i32;
 
     // sunset time in minutes
-    let sunset = (720. - 4. * (longitude_deg - ha.to_degrees()) - eqtime) + timezone_offset;
+    let sunset = base + offset;
     let sunset_hour = (sunset / 60.) as i32;
-    let sunset_minutes = (sunset - (sunset_hour as f64) * 60.) as i32;
+    let sunset_minutes = (sunset % 60.) as i32;
 
     println!(
-        "\x1B[94mat\x1B[0m ({}, {}) \x1B[95mon\x1B[0m {:0>2}.{:0>2}.{}:",
-        latitude_deg, longitude_deg, day, month, year
+        "\x1B[94mat\x1B[0m ({}, {}) \x1B[95mon\x1B[0m {}:",
+        latitude_deg, longitude_deg, time.format("%d.%m.%Y")
     );
     println!(
         " \x1B[93m-\x1B[0m sunrise: {:0>2}:{:0>2}",
