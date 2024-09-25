@@ -1,10 +1,10 @@
+use argh::FromArgs;
 use chrono::{Datelike, Timelike};
 use std::f64::consts::PI;
-use argh::FromArgs;
 
 #[derive(FromArgs)]
-/// sunrise and sunset fetcher
-struct Position {
+/// civil sunrise and sunset time fetcher
+struct Args {
     /// latitude in degrees
     #[argh(option)]
     latitude: f64,
@@ -12,11 +12,17 @@ struct Position {
     /// longitude in degrees
     #[argh(option)]
     longitude: f64,
+
+    /// wether to show only the times
+    #[argh(switch, short = 's')]
+    simple: bool,
 }
 
 fn main() {
-    let Position {
-        latitude, longitude
+    let Args {
+        latitude,
+        longitude,
+        simple,
     } = argh::from_env();
 
     let time = chrono::Local::now();
@@ -66,16 +72,23 @@ fn main() {
     let sunset_hour = (sunset / 60.) as i32;
     let sunset_minutes = (sunset % 60.) as i32;
 
-    println!(
-        "\x1B[94mat\x1B[0m ({}, {}) \x1B[95mon\x1B[0m {}:",
-        latitude_deg, longitude_deg, time.format("%d.%m.%Y")
-    );
-    println!(
-        " \x1B[93m-\x1B[0m sunrise: {:0>2}:{:0>2}",
-        sunrise_hour, sunrise_minutes,
-    );
-    println!(
-        " \x1B[93m-\x1B[0m sunset: {:0>2}:{:0>2}",
-        sunset_hour, sunset_minutes,
-    );
+    if !simple {
+        println!(
+            "\x1B[94mat\x1B[0m ({}, {}) \x1B[95mon\x1B[0m {}:",
+            latitude_deg,
+            longitude_deg,
+            time.format("%d.%m.%Y")
+        );
+        println!(
+            " \x1B[93m-\x1B[0m sunrise: {:0>2}:{:0>2}",
+            sunrise_hour, sunrise_minutes,
+        );
+        println!(
+            " \x1B[93m-\x1B[0m sunset: {:0>2}:{:0>2}",
+            sunset_hour, sunset_minutes,
+        );
+    } else {
+        println!("{:0>2}:{:0>2}", sunrise_hour, sunrise_minutes,);
+        println!("{:0>2}:{:0>2}", sunset_hour, sunset_minutes,);
+    }
 }
